@@ -1,0 +1,111 @@
+<div class="doc-section">
+<h1 class="stair">
+	传统的数据展示方法
+</h1>
+<pre class="prettyprint">
+// 传统的数据展示方法，需要借助服务器端编程如jsp、asp、php来实现，前后端代码耦合在一起，不易于维护
+&lt;div class="aside-nav"&gt;
+  &lt;ul&gt;
+  &lt;!-- 使用计数器标签循环输出 --&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a hidefocus href="href" rel=""&gt;
+    &lt;i class="icon"&gt;&lt;/i&gt;
+    &lt;span class="follow-icon-16"&gt;
+      text
+    &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+  &lt;!-- /使用计数器标签循环输出 --&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+<br>
+
+<pre class="prettyprint">
+// data数据源部分 假设数据源不显式的从服务器端发送到页面（非ajax请求）
+</pre>
+</div>
+
+<div class="doc-section">
+<h1 class="stair">
+	使用模板引擎jquery.tmpl.js展示数据
+</h1>
+<pre class="prettyprint">
+// html 部分
+&lt;div class="aside-nav"&gt;
+  &lt;ul&gt;&lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+<br>
+
+<pre class="prettyprint">
+// 模板引擎部分
+&lt;script type="text/x-jquery-tmpl" id="aside-nav-items"&gt;
+  {{each navItems}} 
+  &lt;li class="nav-item{{if $index == 0 }} cur{{/if}}"&gt;
+    &lt;a hidefocus href="${$value.href}" rel=""&gt;
+      &lt;i class="icon"&gt;&lt;/i&gt;
+      &lt;span class="follow-icon-16"&gt;
+        ${$value.text}
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+  {{/each}}
+&lt;/script&gt;
+</pre>
+<br>
+
+<pre class="prettyprint">
+// javascript 部分
+&lt;script type="text/javascript"&gt;
+  (function getAsideNavItems() {
+    $.ajax({
+      type:'POST',
+      dataType:'json',
+      url:'data/aside-nav-items.json',
+      success:function (responds) {
+        $('.aside-nav &gt; ul').append($('#aside-nav-items').tmpl(responds))
+      },
+      error:function () {}
+    })
+  })();
+&lt;/script&gt;
+</pre>
+<br>
+
+<pre class="prettyprint">
+// data数据源部分 aside-nav-items.json
+{
+  "navItems": [
+    {"text":"构建友好的目录结构"          , "href":"directory.html"},
+    {"text":"创建一个友好html文档"          , "href":"base-html.html"},
+    {"text":"reset & common css"          , "href":"base-css.html"},
+    {"text":"html/css/javascript解耦"     , "href":"decoupling.html"},
+    {"text":"使用模板引擎jquery.tmpl.js"  , "href":"templete-engine.html"},
+    {"text":"使用暴露式模块模式组织代码"    , "href":"pattens.html"},
+    {"text":"使用浏览器开发试调工具"      , "href":"develorper-tools.html"},
+    {"text":"编写项目开发文档/开发规范"   , "href":"building-api.html"}
+  ]
+}
+</pre>
+</div>
+<div class="doc-section">
+<ul>
+	<li>获取jquery.tmpl.js<br/><a hidefocus target="_blank" href="https://github.com/BorisMoore/jquery-tmpl">https://github.com/BorisMoore/jquery-tmpl</a></li>
+	<li><a class="show-demo" hidefocus href="javascript:;">查看demo演示</a></li>
+</ul>
+</div>
+<div class="notice">
+	<strong>推荐理由：</strong>
+	<ul>
+		<li>1、不依赖于服务器端编程，使前后端开发人员在开发过程中的职责更加明确</li>
+		<li>2、体积小巧，功能强大，简单易用、渲染性能表现良好</li>
+		<li>3、能将数据层和视图层进行分离，易于维护</li>
+	</ul>
+</div>
+<br>
+<br>
+<br>
+<script type="text/javascript">
+	window.prettyPrint && prettyPrint();
+</script>

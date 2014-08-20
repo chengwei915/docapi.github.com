@@ -1,0 +1,133 @@
+<div class="doc-section">
+<h1 class="stair">
+	html代码中耦合css/javascript代码
+</h1>
+<pre class="prettyprint">
+&lt;div style="width:800px;margin:0 auto"&gt;
+  &lt;ul style="list-style:none;background:#f4f4f4;padding:0"&gt;
+
+    &lt;li style="clear:both;border-bottom:1px solid #ddd;padding:0.5em"&gt;
+      &lt;a id="0" href="javascript:;" onclick="remove(this.id);return false" style="float:right"&gt;删除&lt;/a&gt;
+      list content
+    &lt;/li&gt;
+
+    &lt;li style="clear:both;border-bottom:1px solid #ddd;padding:0.5em"&gt;
+      &lt;a id="1" href="javascript:;" onclick="remove(this.id);return false" style="float:right"&gt;删除&lt;/a&gt;
+      list content
+    &lt;/li&gt;
+
+    &lt;li style="clear:both;border-bottom:1px solid #ddd;padding:0.5em"&gt;
+      &lt;a id="2" href="javascript:;" onclick="remove(this.id);return false" style="float:right"&gt;删除&lt;/a&gt;
+      list content
+    &lt;/li&gt;
+
+  &lt;/ul&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+  function remove(id) {
+    // logic...
+  }
+&lt;/script&gt;
+</pre>
+</div>
+
+<div class="doc-section">
+<h1 class="stair">
+	将css/javascript代码从html代码中解耦
+</h1>
+<pre class="prettyprint">
+// css部分成为可复用的代码
+&lt;style type="text/css"&gt;
+  .demo-list { width: 800px; margin: 0 auto }
+  .demo-list ul { list-style: none; background: #f4f4f4 }
+  .demo-list ul .demo-item { padding: 0.5em; border-bottom: 1px solid #ddd }
+  .fl { float:left }
+  .fr { float:right }
+  .clearfix { *zoom:1 } 
+  .clearfix:after { height: 0; content: '.'; clear: both; display: block; visibility: hidden }
+&lt;/style&gt;
+</pre>
+<br>
+<pre class="prettyprint">
+// html结构的可读性得到了很大改善
+&lt;div class="demo-list"&gt;
+  &lt;ul&gt;
+
+    &lt;li class="demo-item clearfix"&gt;
+      &lt;a class="fr" id="0" href="javascript:;"&gt;删除&lt;/a&gt;
+      list content
+    &lt;/li&gt;
+
+    &lt;li class="demo-item clearfix"&gt;
+      &lt;a class="fr" id="0" href="javascript:;"&gt;删除&lt;/a&gt;
+      list content
+    &lt;/li&gt;
+
+    &lt;li class="demo-item clearfix"&gt;
+      &lt;a class="fr" id="0" href="javascript:;"&gt;删除&lt;/a&gt;
+      list content
+    &lt;/li&gt;
+
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+<br>
+<pre class="prettyprint">
+// 将删除节点的javascript代码分离出来而不是做重复工作绑定到每个DOM节点上
+&lt;script type="text/javascript"&gt;
+  $(document).on('click', '.demo-item &gt; a', function (e) {
+    remove(this.id);
+    e.preventDefault();
+  })
+  function remove(id) {
+    // logic...
+  }
+&lt;/script&gt;
+</pre>
+</div>
+<div class="doc-section">
+<h1 class="stair">
+	javascript代码中耦合css代码
+</h1>
+<pre class="prettyprint">
+// 假设选择列表的某一行时需要给其加高亮
+&lt;script type="text/javascript"&gt;
+  $(document).on('click', '.demo-item', function (e) {
+    $(this).css({
+      'color': '#fff',
+      'font-weigth': bold,
+      'border-color': '#ddd',
+      'background-color': '#f00'
+    })
+  })
+&lt;/script&gt;
+</pre>
+<br>
+<pre class="prettyprint">
+// 当我们需修改选中行的样式时我们只需要修改样式文件
+&lt;style type="text/css"&gt;
+  .demo-item.selected {
+    color: #fff;
+    font-weight: bold;
+    border-color: '#ddd';
+    background-color: #f00;
+  }
+&lt;/style&gt;
+
+// javascript行为只需负责给选择行添加一个样式名
+&lt;script type="text/javascript"&gt;
+  $(document).on('click', '.demo-item', function (e) {
+    $(this).addClass('selected')
+  })
+&lt;/script&gt;
+</pre>
+</div>
+<div class="notice">
+	<strong>目的：</strong>将html（结构层）、css（表现层）、javascript（行为层）的代码解耦可以增强代码的可读性、提高代码的灵活性、减小javascript文件体积、使得代码易于维护。
+</div>
+<br>
+<br>
+<br>
+<script type="text/javascript">
+	window.prettyPrint && prettyPrint()
+</script>
