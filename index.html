@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html class="lt-ie-9"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html>
+<!--<![endif]-->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<title>webApp.architecture</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="plugins/prettify/prettify.css">
+	<script type="text/javascript" src="plugins/prettify/prettify.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
+	<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>	
+	<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="js/webApp.js"></script>
+	<script type="text/javascript" src="js/swing-arrow.js"></script>
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	
+</head>
+<body>
+<div class="header top-z-index">
+	<div class="linear">
+		<div class="header-info">
+			<h1>web前端开发人员开发规范及注意事项</h1>
+		</div>
+	</div>
+	<!-- <div class="cross-shadow pos-rel">
+		<div class="black pos-abs shadow-90 shadow-vvv"></div>
+		<div class="black pos-abs shadow-90 shadow-vv"></div>
+		<div class="black pos-abs shadow-90 shadow-v"></div>
+	</div> -->
+	<div class="cross-shadow">
+		<div class="rgba-002 shadow-vvv">
+			<div class="rgba-002 shadow-vv">
+				<div class="rgba-002 shadow-v"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="aside">
+	<div class="getting getting-started">
+		<input id="filter" type="text" placeholder="keyword to filter">
+	</div>
+	<div class="aside-nav">
+		<ul></ul>
+	</div>
+</div>
+<div class="content">
+	<div id="request" class="request">
+	</div>
+</div>
+
+<script type="text/x-jquery-tmpl" id="aside-nav-items">
+	{{each navItems}} 
+	<li class="nav-item{{if $index == 0 }} cur{{/if}}">
+		<a hidefocus href="${$value.href}" rel="">
+			<i class="icon"></i>
+			<span class="follow-icon-16">
+				${$value.text}
+			</span>
+		</a>
+	</li>
+	{{/each}}
+</script>
+<script type="text/javascript">
+$(function () {
+	if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		var msViewportStyle = document.createElement("style")
+		msViewportStyle.appendChild(
+			document.createTextNode(
+				"@-ms-viewport{width:auto!important}"
+			)
+		)
+		document.getElementsByTagName("head")[0].appendChild(msViewportStyle)
+	}
+	(function getAsideNavItems() {
+		$.ajax({
+			type:'POST',
+			dataType:'json',
+			url:'data/aside-nav-items.json',
+			success:function (responds) {
+				$('.aside-nav > ul').append($('#aside-nav-items').tmpl(responds));
+				$('.aside-nav').arrowSwing({
+					duration:400,
+					easing:'easeOutCubic' //easeOutCubic || easeOutQuint || easeOutExpo || easeOutCirc || easeOutBack
+				})
+				$('.nav-item a').eq(0).trigger('click')
+			},
+			error:function () {}
+		})
+	})();
+	$(document).on('keyup','#filter',function () {
+		var keywords = $(this).val()
+		, items = $('.aside-nav .nav-item')
+		, i = 0
+		, len = items.size();
+
+		items.hide();
+		for( ; i<len; i++ ){
+			var item = $(items[i]), word = $.trim(item.find('span').text());
+			match(keywords, word) &&　item.show()
+		}
+		function match(string, word) {
+			var len = string.length;
+			var sub = word.substr(0, len);
+			return string.toUpperCase() === sub.toUpperCase();
+		}
+	});
+	alert('top-bar样式未完成')
+})
+</script>
+</body>
+</html>

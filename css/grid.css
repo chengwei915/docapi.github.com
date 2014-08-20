@@ -1,0 +1,77 @@
+
+.grid thead th {
+	background-color: #f0f0f0;
+	background-image: -webkit-linear-gradient(top, #f4f4f4, #e0e0e0);
+	background-image:    -moz-linear-gradient(top, #f4f4f4, #e0e0e0);
+	background-image:     -ms-linear-gradient(top, #f4f4f4, #e0e0e0);
+	background-image:      -o-linear-gradient(top, #f4f4f4, #e0e0e0);
+	background-image:         linear-gradient(top, #f4f4f4, #e0e0e0);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#f4f4f4, endColorstr=#e0e0e0)
+}
+.grid tbody tr {
+	cursor: pointer;
+}
+.grid tbody tr.empty {
+	cursor: default;
+}
+.grid tbody tr:hover {
+	/*background:#f7faff;*/
+	background:#2a65bf;
+	color: #fff
+}
+.grid tbody tr.empty:hover {
+	background:none;
+}
+.grid tbody tr:hover a {
+	color: #fff
+}
+.grid tbody tr:hover td {
+	/*border-color: #ccc*/
+}
+.grid th, .grid td {
+	padding:0 4px;
+	height: 24px;
+	border:1px solid #ddd;
+}
+.grid .even {
+	background:#f4f4f4
+}
+.grid .empty td {
+	padding:4px;
+}
+.grid .empty td .empty-text {
+	color: #999;
+	text-align: center;
+	padding:.25em;
+	border:1px solid #FFD271;
+	background: #FFFBDF;
+}
+.grid .checkboxheader, .grid .checkbox {
+	position: relative;
+	top:4px;
+	*top:0;
+}
+.grid a {
+	color:#08c; 
+}
+.pager a {
+	text-align: center;
+	padding:2px 6px;
+	border-radius:3px; 
+}
+.pager a.disabled {
+	color:#999;
+	cursor: text;
+}
+.pager a.disabled:hover {
+	background:none;
+	color:#999;
+}
+.pager a.cur, .pager a.cur:hover {
+	background: #f7faff;
+	color:#999;
+}
+.pager a:hover {
+	background: #2a65bf;
+	color:#fff;
+}

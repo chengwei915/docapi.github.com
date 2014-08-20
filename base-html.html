@@ -1,0 +1,96 @@
+
+<div class="doc-section">
+<h1 class="stair">
+	基本html模板
+</h1>
+<pre class="prettyprint">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+　　&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+　　&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+　　&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+　　&lt;title&gt;how to create an html doc&lt;/title&gt;
+　　&lt;link rel="stylesheet" type="text/css" href="css/reset.css"&gt;
+　　&lt;link rel="stylesheet" type="text/css" href="css/common.css"&gt;
+　　&lt;link rel="stylesheet" type="text/css" href="prettify/prettify.css"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+　　&lt;div&gt;base html&lt;/div&gt;
+　　&lt;script type="text/javascript" src="js/app.js"&gt;&lt;/script&gt;
+　　&lt;script type="text/javascript" src="js/current-module.js"&gt;&lt;/script&gt;
+　　&lt;script type="text/javascript" src="prettify/prettify.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</pre>
+</div>
+
+<div class="doc-section">
+<h1>为什么使用&lt;!DOCTYPE html&gt;</h1>
+<p>
+当前的大多数浏览器会以“标准模式”呈现使用此 DOCTYPE 声明的内容，这意味着您的应用应具有[更强的跨浏览器适应能力]。DOCTYPE 还设计为可适度降级；无法理解该声明的浏览器会将其忽略，并使用“兼容模式”来显示其内容。
+请注意，某些在兼容模式下工作的 CSS 在标准模式中是无效的。具体地说，所有以百分比表示的大小必须继承自父块元素，而如果这些父元素中的某个父元素没有指定大小，则系统会将其大小假定为 0x0 像素。因此，我们加入了以下 &lt;style&gt; 声明：
+<pre class="prettyprint">
+&lt;style type="text/css"&gt;
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+&lt;/style&gt;
+</pre>
+上述说明摘自google map javascript api v3 <a target="blank" href="https://developers.google.com/maps/documentation/javascript/tutorial?hl=zh-cn">https://developers.google.com/maps/documentation/javascript/tutorial?hl=zh-cn</a><br/>
+该 CSS 声明用于表示视图主要容器 &lt;div&gt;（假设名为container）应占据 HTML 主体的整个高度。请注意，我们还必须明确声明 &lt;body&gt; 和 &lt;html&gt; 所占的百分比。
+</p>
+</div>
+
+<div class="doc-section">
+<h1>&lt;meta&gt;标签</h1>
+<pre class="prettyprint">
+&lt;!-- 定义MIME类型为text/html、文档的字符编码为utf-8并把这些属性关联到 HTTP 头部 --&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+
+&lt;!-- 如果项目使用响应式布局，移动设备优先 --&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+
+&lt;!-- 当用户使用ie浏览器打开时会优先使用高版本浏览器模式 --&gt;
+&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+</pre>
+</div>
+
+<div class="doc-section">
+<h1>&lt;link&gt;标签-外部样式表的引入</h1>
+<pre class="prettyprint">
+&lt;!-- 一个重置html常用元素默认样式的样式表，让这些元素在各个浏览器之间的样式表现得一致 --&gt;
+&lt;link rel="stylesheet" type="text/css" href="css/reset.css"&gt;
+
+&lt;!-- 一个公用样式表，为各个页面提供公用的样式 --&gt;
+&lt;link rel="stylesheet" type="text/css" href="css/common.css"&gt;
+
+&lt;!-- 其他样式，一般适用于单独一个页面或者某些个模块下的页面 --&gt;
+&lt;link rel="stylesheet" type="text/css" href="css/other.css"&gt;
+</pre>
+</div>
+
+<div class="doc-section">
+<h1>&lt;script&gt;标签-外部脚本的引入</h1>
+<pre class="prettyprint">
+&lt;!-- 引入当前页面所需脚本文件 --&gt;
+&lt;script type="text/javascript" src="js/app.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/current-module.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="prettify/prettify.js"&gt;&lt;/script&gt;
+</pre>
+</div>
+
+<div class="doc-section">
+<h1>代码加载顺序以及应遵循的原则</h1>
+<p>在构建html文档时应考虑到各部分代码的加载顺序以及应遵循的规则。若无特殊情况应尽量遵循先加载内容层（html）、表现层（css）、行为层（javascript）的顺序， 这样一来既可以避免javascript报错时给浏览器视图上的呈现带来干扰、确保文档内容和样式加载完毕、减轻开发人员在开发试调过程中排错的工作量，同时可以给用户带来更友好的体验。因此，我们建议将样式代码放（包括内部样式）到&lt;head&gt;标签结束前而脚本（包括内部脚本）则放到&lt;body&gt;结束前加载。
+上述html模板为基本html模板，建议开发人员根据自身项目的需求进行适当的扩展和定制。如果动态加载的javascript部分需要用到依赖库，请将依赖库放到放到&lt;head&gt;标签结束前加载</p>
+</div>
+<div class="notice"><strong>补充：</strong>以上工作是为了让我们的web应用在各个浏览器里做到兼容性最大化</div>
+<br>
+<br>
+<br>
+<script type="text/javascript">
+	window.prettyPrint && prettyPrint()
+</script>	

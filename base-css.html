@@ -1,0 +1,125 @@
+
+<div class="doc-section">
+<h1 class="stair">
+	reset.css
+</h1>
+<p>该样式表的作用是重置html常用元素默认样式的样式表，让这些元素在各个浏览器之间的样式表现得一致，该样式表可根据自身项目需求进行定制，项目中每个html文件应该引入（属标配），代码如下：</p>
+<pre class="prettyprint">
+html,body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,img,
+form,fieldset,legend,label,input,button,select,textarea,
+/* HTML5 元素 */
+article, aside, details, figcaption, figure, footer,header, hgroup, menu, nav, section,
+summary, time, mark, audio, video {
+  margin:0;
+  padding:0
+}
+h1,h2,h3,h4,h5,h6,
+input,button,select,textarea {
+  /* 字体大小继承自父级元素 */
+  font-size: 100%
+}
+ul,ol {
+  list-style:none
+}
+fieldset {
+  padding:0 .5em .5em;
+  border:1px solid #ccc
+}
+legend {
+  padding:0 .5em
+}
+table {
+  border-spacing:0;
+  border-collapse:collapse
+}
+th {
+  text-align:left
+}
+input,button,select,textarea {
+  outline:none;
+  font:normal normal 12px/1.5 tahoma, Monaco, Ubuntu, Arial, "libra sans", sans-serif, simsun
+}
+/* 清除img的边距 */
+img {
+  vertical-align:top
+}
+/* 清除元素默认边框 */
+img,iframe {
+  border:0 none
+}
+</pre>
+</div>
+
+<div class="doc-section">
+<h1>common.css</h1>
+<p>
+该样式表为整个项目提供公用的样式，该样式表可根据自身项目需求进行扩展和定制，项目中每个html文件应该引入（属标配），代码如下：
+<pre class="prettyprint">
+html,body {
+  height:100%;
+}
+body {
+  background:#fff;
+  overflow-y:scroll;
+  *overflow-y:visible;
+  font:normal normal 12px/1.5 Monaco, tahoma, Ubuntu, Arial, "libra sans", sans-serif, simsun
+}
+a:link {
+  color:#08c;
+  text-decoration:none;
+}
+a:visited { text-decoration:none }
+a:hover { /* 自定义 */ }
+a:active { /* 自定义 */ }
+
+.fl { float:left }
+.fr { float:right }
+.tal { text-align:left }
+.tar { text-align:right }
+.tac { text-align:center }
+.tov { text-indent:-1000em } /* text-outside-viewport */
+.pos-abs { position:absolute }
+.pos-rel { position:relative }
+.not-display { display:none }
+.not-visible { visibility:hidden }
+.top-z-index { z-index:10000!important }
+.flow-visible { overflow:visible!important }
+
+/* 清除浮动，触发ie浏览器的haslayout属性，让这些css在ie低版本浏览器下也能被正常解析 */
+.clearfix,.haslayout { *zoom:1 } 
+.clearfix:after { height:0; content:'.'; clear:both; display:block; visibility:hidden }
+
+/* 更多公用样式 */
+/* .more { ... } */
+</pre>
+</p>
+</div>
+
+<div class="doc-section">
+<h1>css sprites 技术</h1>
+<p>
+CSS 图片拼合 (CSS sprites) 可有效降低图片文件的 HTTP 连接请求数. 多个图片将以一定间距合并为一个大图片文件. 页面中使用这些图片的元素将利用 background-position 这一 CSS 属性来显示拼合图片中的指定位置.
+这一技术可有效提升网站性能, 尤其是网页上有众多小图片时, 如许多菜单栏图标. Yahoo! 首页是使用此技术的一个实例.<br/>
+上述说明摘抄自<a hidefocus target="_blank" href="http://cn.spritegen.website-performance.org/section/what-are-css-sprites">http://cn.spritegen.website-performance.org/section/what-are-css-sprites</a>，CSS 图片拼合通常有以下两种方案：
+<br/>
+<br/>
+1、使用CSS 图片拼合生成器。
+<br/>
+该方案的优点在于图片自动拼合，可自动生成拼合之后的图片以及css样式代码，无需手工测量background-position属性的坐标值，缺点是拼合之后的图片不具备分层信息，可编辑性稍差;
+<br/>
+<br/>
+2、借助Adobe Fireworks手工拼合。
+<br/>
+该方案的优点在于拼合之后的png图片可保存分层信息，易于后续的修改和编辑，待项目开发完成时导出最终拼合图片，但该方案需要手工测量background-position属性的坐标值和编写css样式代码;
+<br/>
+<br/>
+总而言之，使用css sprites可有效降低图片文件的 HTTP 连接请求数，提高网页加载速度，但后续的维护也会有一定的麻烦，建议开发人员做些相应的规划，同时需注意的是，应尽量将单张图片大小控制在200k以内。
+</p>
+</div>
+<div class="notice"><strong>补充：</strong>以上工作是为了让我们的web应用在各个浏览器里做到兼容性最大化</div>
+<br>
+<br>
+<br>
+<script type="text/javascript">
+	window.prettyPrint && prettyPrint()
+</script>

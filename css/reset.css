@@ -1,0 +1,37 @@
+html,body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,img,
+form,fieldset,legend,label,input,button,select,textarea,
+pre,code {
+	margin:0;
+	padding:0
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size: 100%
+}
+ul,ol {
+	list-style:none
+}
+fieldset {
+	padding:0 .5em .5em;
+	border:1px solid #ccc
+}
+legend {
+	padding:0 .5em
+}
+table {
+	border-spacing:0;
+	border-collapse:collapse
+}
+th {
+	text-align:left
+}
+input,button,select,textarea {
+	outline:none;
+	font:normal normal 12px/1.5 Monaco, Ubuntu, Arial, "libra sans", sans-serif, simsun
+}
+img {
+	vertical-align:top
+}
+img,iframe {
+	border:0 none
+}
+
