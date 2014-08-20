@@ -1,0 +1,206 @@
+<div class="doc-section">
+<h1>在项目中常见的javascript代码组织形式</h1>
+通常我们在项目中编写javascript代码时会向下面这样：
+<pre class="prettyprint">
+var name = 'myApp';
+var getName = function () {
+	return name
+}
+// 或者
+function getName () {
+	return name
+}
+</pre>
+但当我们的代码量随着项目开发的需求越来越多时，全局函数和全局变量也会变得越来越多，代码将变得越来越不易阅读，不利于扩展以及维护，并且很有可能跟项目中的一些第三方类库或者插件有冲突，因此，考虑到代码的可读性、可维护性以及可扩展性，在编写代码时，我们需要对代码进行合理的组织。
+</div>
+
+<div class="doc-section">
+<h1>创建命名空间，将变量和方法变为私有的，而不是暴露在全局</h1>
+我们可以将上述代码进行一些改进：
+<pre class="prettyprint">
+var webApp = webApp || {};
+webApp = {
+	name: 'myApp',
+	getName: function() {
+		return this.name
+	}
+	
+	// more...
+}
+console.log(webApp.getName()) // myApp
+</pre>
+这样，代码看起来应该更清晰明了，var webApp = webApp || {} 我们先创建一个命名空间webApp，如果webApp已经存在，我们则使用现有webApp作为命名空间，如果不存在我们则创建一个新的命名空间，我们所定义的属性和方法都将继承自webApp,通过webApp.name 和 webApp.getName()来访问或者调用这些属性、方法。
+</div>
+
+<div class="doc-section">
+<h1>如何将代码变得更加灵活</h1>
+将我们定义的私有变量和私有方法保护起来，并返回公用接口：
+<pre class="prettyprint">
+var webApp = (function(){
+	var privateName = "myApp";
+	var publicGreeting  = "hello";
+
+	function privateFunction() {
+		console.log( "Name:" + privateName );
+	}
+
+	function publicSetName( strName ) {
+		privateName = strName;
+	}
+
+	function publicGetName() {
+		privateFunction();
+	}
+
+	// 引用内部变量和指针来返回公共接口
+	return {
+		setName: publicSetName,
+		greeting: publicGreeting,
+		getName: publicGetName
+	}
+})();
+console.log(webApp.getName()) // myApp
+webApp.setName('newWebApp')
+console.log(webApp.getName()) // newWebApp
+</pre>
+privateFunction、publicSetName、publicGetName 这3个方法属于私有方法，我们只有在webApp方法内部才能访问，webApp.setName、webApp.greeting、webApp.getName 则属于公用接口，共全局调用，return 表示webApp这个方法有返回值，该方法最后的括号 (); 表示立即执行该方法，因此，执行该方法之后我们最终得到的结果非常明显，即是：
+<pre class="prettyprint">
+{
+	setName: publicSetName,
+	greeting: publicName,
+	getName: publicGetName
+}
+</pre>
+看到此处，我们应该很容易明白为什么调用公用接口的方式是 webApp.setName('newWebApp')、webApp.greeting()、webApp.getName()。另外用这样的方式区分公有方法和私有方法也比较易于开发者进行阅读和维护。
+</div>
+
+<div class="doc-section">
+<h1>对代码进行优化</h1>
+研究过优秀类库jQuery的开发者应该都比较清楚jQuery的作者是如何导出jQuery函数的,我们从源码中可以看到像下面这样一段代码：
+<pre class="prettyprint">
+(function(window,undefined){
+	// ...
+
+	// 导出jQuery函数，暴露接口
+	window.jQuery = window.$ = jQuery;
+})(window);
+
+// 构造jQuery对象
+window.jQuery(selector) 或者 jQuery(selector) 或者 $(selector)
+
+// 编写jQuery插件
+$.fn.extPlugin = function () {
+	// ...
+	return this.each(function(){
+		// ...
+	})
+}
+
+// 调用
+$(selector).extPlugin()
+</pre>
+但为何形式参数中有window、undefined，而实参中只传递window呢？window是一个顶层对象，作为实参传递进去，在函数内部可以减少对window这个顶层对象的查找次数。javascript 中的 undefined 并不是作为关键字出现的,该参数可以看作是内部变量，当jQuery函数外部定义变量 undefined 时，jQuery函数内部出现的undefined值的地方将不会受到影响，举例说明如下：
+<pre class="prettyprint">
+var undefined = 'xxx';
+
+// 传递undefined
+(function(window,undefined){
+	console.log(undefined) // 输出 undefined (不受外部变量影响)
+})(window);
+
+// 不传递undefined
+(function(window){
+	console.log(undefined) // 在某些浏览器下输出 xxx (因此会跟预期的不一样)
+})(window);
+</pre>
+综上所述，window和undefined这两个参数巧妙的传递无疑起到了优化性能和兼容性容错的作用。
+借鉴jQuery的这种巧妙的优化方案，我们可以将上面的webApp函数再进行改进，得到如下代码：
+<pre class="prettyprint">
+(function (window, undefined) {
+	var webApp = (function(){
+		var privateName = "myApp";
+		var publicGreeting  = "hello";
+
+		function privateFunction() {
+			console.log( "Name:" + privateName );
+		}
+
+		function publicSetName( strName ) {
+			privateName = strName;
+		}
+
+		function publicGetName() {
+			privateFunction();
+		}
+
+		return {
+			setName: publicSetName,
+			greeting: publicGreeting,
+			getName: publicGetName
+		}
+	})();
+
+	// 导出webApp函数
+	window.webApp = webApp	
+})(window);
+</pre>
+</div>
+
+<div class="doc-section">
+<h1>模块的扩展与团队的协同开发</h1>
+当我们进行团队协同开发时我们编写的代码不仅要易于阅读、维护、扩展，同时还要为其他开发人员所用，并且不能与其他开发人员的代码或者第三方类库产生冲突，那么用什么样的方式来对既有的 javascript 函数进行扩展，让自己编写的模块不干扰其他他开发人员编写的模块，反之，自己编写的模块也不会被干扰，我们就以webApp函数为例添加额外功能（假设我们不对既有代码进行扩展编辑），代码如下：
+<pre class="prettyprint">
+// 添加另一个功能
+webApp.anotherFun = function () {
+	// ...
+	console.log('anotherFun')
+}
+
+// 添加多个功能时，我们可以将webApp当参数来传递
+;(function(webApp){
+	webApp.fun1 = function () {
+		// ...
+		console.log('hello')
+	}
+	webApp.fun2 = function () {
+		// ...
+	}
+	webApp.funN = function () {
+		// ...
+	}
+})(webApp);
+
+console.log(webApp) // 即可看到扩展的方法
+
+// 在webApp的某个函数的基础上扩展功能 (对fun1进行重写，但我们还可以引用webApp.oldFun1这个指针)
+;(function(webApp){
+	webApp.oldFun1 = webApp.fun1
+	webApp.fun1 = function () {
+		console.log('hello myApp!')
+	}
+})(webApp)
+
+webApp.oldFun1() // hello
+webApp.fun1() // hello myApp!
+
+// 扩展子模块
+webApp.fun1 = function () {
+	var subModule = {};
+	// ...
+	subModule = {
+		subFun: function(){
+			// ...
+			console.log(webApp.fun1.subFun)
+		}
+
+		// more...
+	}
+	return subModule;
+}
+// 调用
+webApp.fun1.subFun()
+</pre>
+</div>
+<script type="text/javascript">
+	window.prettyPrint && prettyPrint()
+</script>

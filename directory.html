@@ -1,0 +1,92 @@
+
+<div class="doc-section">
+<h1 class="stair">
+	构建友好的目录结构：
+</h1>
+<pre class="prettyprint">
+webapp/
+├── css/
+│    ├── reset.css
+│    ├── common.css
+│    └── other-module.css
+├── js/
+│    ├── app.js
+│    ├── juery.js
+│    ├── public.js
+│    └── ......
+├── view/
+│    ├── user/
+│    ├── task/
+│    ├── config/
+│    └── ....../
+├── data/
+├── fonts/
+├── icons/
+├── images/
+├── results/
+├── plugins/
+├── login.jsp
+├── login-error.jsp
+└── index.html
+</pre>
+</div>
+<div class="doc-section">
+	<h1 class="stair">
+		目录结构说明：
+	</h1>
+	<table class="config-table">
+		<thead>
+			<th width="80">文件（夹）</th>
+			<th>描述</th>
+		</thead>
+		<tr>
+			<td>css</td>
+			<td>用于存放项目中用到的css文件</td>
+		</tr>
+		<tr>
+			<td>js</td>
+			<td>用于存放项目中用到的javascript文件</td>
+		</tr>
+		<tr>
+			<td>view</td>
+			<td>用于存放项目中用到的视图模板文件</td>
+		</tr>
+		<tr>
+			<td>data</td>
+			<td>用于存放项目中用到的静态数据文件一般为json</td>
+		</tr>
+		<tr>
+			<td>fonts</td>
+			<td>用于存放项目中用到的特殊字体文件</td>
+		</tr>
+		<tr>
+			<td>icons</td>
+			<td>用于存放项目中用到的图标文件</td>
+		</tr>
+		<tr>
+			<td>images</td>
+			<td>用于存放项目中用到的图片文件</td>
+		</tr>
+		<tr>
+			<td>results</td>
+			<td>用于存放模拟ajax向服务器端发送请求服务器的返回结果文件一般为json</td>
+		</tr>
+		<tr>
+			<td>plugins</td>
+			<td>用于存放项目中用到的第三方类库文件，如果使用多个依赖框架可以再做细分</td>
+		</tr>
+		<tr>
+			<td>index.html</td>
+			<td>该文件为项目主页面或者入口文件</td>
+		</tr>
+	</table>
+</div>
+<div class="notice">
+	<strong>建议：</strong>项目的目录结构可根据前后端开发的具体需求来定制，但应尽量做到层次清晰，语义规范，易于理解。
+</div>
+<br>
+<br>
+<br>
+<script type="text/javascript">
+	window.prettyPrint && prettyPrint()
+</script>
