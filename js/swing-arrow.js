@@ -50,7 +50,7 @@
 			$navItem = me.closest('.nav-item')
 			t = this.offsetTop + this.offsetHeight / 2
 			$.ajax({
-				type:'POST',
+				// type:'POST',
 				url:action,
 				dataType:'html',
 				beforeSend:function (jqXHR,settings) {
