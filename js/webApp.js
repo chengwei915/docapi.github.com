@@ -126,4 +126,4 @@
 		}
 	})();
 	window.webApp = window._ = webApp;
-})( jQeury, window, document );
+})( jQuery, window, document );
