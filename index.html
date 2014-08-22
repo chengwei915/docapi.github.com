@@ -58,7 +58,7 @@
 
 <script type="text/x-jquery-tmpl" id="aside-nav-items">
 	{{each navItems}} 
-	<li class="nav-item{{if $index == 0 }} cur{{/if}}">
+	<li item-id="${$value.itemId}" class="nav-item{{if $index == 0 }} cur{{/if}}">
 		<a hidefocus href="${$value.href}" rel="">
 			<i class="icon"></i>
 			<span class="follow-icon-16">
@@ -112,6 +112,11 @@ $(function () {
 			return string.toUpperCase() === sub.toUpperCase();
 		}
 	});
+
+	$(window).on('hashchange',function() {
+		var itemId = window.location.hash;
+		$(itemId).find('a').trigger('click');
+	})
 })
 </script>
 </body>

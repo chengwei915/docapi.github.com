@@ -4,18 +4,20 @@
 </h1>
 <pre class="prettyprint">
 // 传统的数据展示方法，需要借助服务器端编程如jsp、asp、php来实现，前后端代码耦合在一起，不易于维护
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%&gt;  
+
 &lt;div class="aside-nav"&gt;
   &lt;ul&gt;
-  &lt;!-- 使用计数器标签循环输出 --&gt;
-  &lt;li class="nav-item"&gt;
-    &lt;a hidefocus href="href" rel=""&gt;
-    &lt;i class="icon"&gt;&lt;/i&gt;
-    &lt;span class="follow-icon-16"&gt;
-      text
-    &lt;/span&gt;
+  &lt;c:foreach items="navItems" var="item" varStatus="status"&gt;
+  &lt;li item-id="${item.itemId}" class="nav-item&lt;c:if test="${status.index == 0}"&gt; cur&lt;/c:if&gt;"&gt;
+    &lt;a hidefocus href="${item.href}" rel=""&gt;
+      &lt;i class="icon"&gt;&lt;/i&gt;
+      &lt;span class="follow-icon-16"&gt;
+        ${item.text}
+      &lt;/span&gt;
     &lt;/a&gt;
   &lt;/li&gt;
-  &lt;!-- /使用计数器标签循环输出 --&gt;
+  &lt;/c:foreach&gt;
   &lt;/ul&gt;
 &lt;/div&gt;
 </pre>
@@ -32,6 +34,7 @@
 </h1>
 <pre class="prettyprint">
 // html 部分
+&lt;script type="text/javascript" src="js/jquery.tmpl.min.js"&gt;&lt;/script&gt;
 &lt;div class="aside-nav"&gt;
   &lt;ul&gt;&lt;/ul&gt;
 &lt;/div&gt;
@@ -42,7 +45,7 @@
 // 模板引擎部分
 &lt;script type="text/x-jquery-tmpl" id="aside-nav-items"&gt;
   {{each navItems}} 
-  &lt;li class="nav-item{{if $index == 0 }} cur{{/if}}"&gt;
+  &lt;li item-id="${$value.itemId}" class="nav-item{{if $index == 0 }} cur{{/if}}"&gt;
     &lt;a hidefocus href="${$value.href}" rel=""&gt;
       &lt;i class="icon"&gt;&lt;/i&gt;
       &lt;span class="follow-icon-16"&gt;
@@ -77,14 +80,14 @@
 // data数据源部分 aside-nav-items.json
 {
   "navItems": [
-    {"text":"构建友好的目录结构"          , "href":"directory.html"},
-    {"text":"创建一个友好html文档"          , "href":"base-html.html"},
-    {"text":"reset & common css"          , "href":"base-css.html"},
-    {"text":"html/css/javascript解耦"     , "href":"decoupling.html"},
-    {"text":"使用模板引擎jquery.tmpl.js"  , "href":"templete-engine.html"},
-    {"text":"使用暴露式模块模式组织代码"    , "href":"pattens.html"},
-    {"text":"使用浏览器开发试调工具"      , "href":"develorper-tools.html"},
-    {"text":"编写项目开发文档/开发规范"   , "href":"building-api.html"}
+    { "itemId":"0", "href":"directory.html"        , "text":"构建友好的目录结构"         },
+    { "itemId":"1", "href":"base-html.html"        , "text":"创建一个友好html文档"       },
+    { "itemId":"2", "href":"base-css.html"         , "text":"reset & common css"         },
+    { "itemId":"3", "href":"decoupling.html"       , "text":"html/css/javascript解耦"    },
+    { "itemId":"4", "href":"templete-engine.html"  , "text":"使用模板引擎jquery.tmpl.js" },
+    { "itemId":"5", "href":"pattens.html"          , "text":"使用暴露式模块模式组织代码" },
+    { "itemId":"6", "href":"develorper-tools.html" , "text":"使用浏览器开发试调工具"     },
+    { "itemId":"7", "href":"building-api.html"     , "text":"编写项目开发文档/开发规范"  }
   ]
 }
 </pre>
@@ -92,8 +95,17 @@
 <div class="doc-section">
 <ul>
 	<li>获取jquery.tmpl.js<br/><a hidefocus target="_blank" href="https://github.com/BorisMoore/jquery-tmpl">https://github.com/BorisMoore/jquery-tmpl</a></li>
-	<li><a class="show-demo" hidefocus href="javascript:;">查看demo演示</a></li>
+	<li><a class="show-demo" hidefocus href="javascript:;">查看demo演示</a>（请按F12打开浏览器控制台查看加载数据和渲染html的耗时）</li>
 </ul>
+</div>
+<div id="demo-content" class="config doc-section" style="display:none;">
+  <table class="config-table">
+    <thead>
+      <th class="tac" width="38">序号</th>
+      <th width="48%">name</th>
+      <th>value</th>
+    </thead>
+  </table>
 </div>
 <div class="notice">
 	<strong>推荐理由：</strong>
@@ -108,4 +120,37 @@
 <br>
 <script type="text/javascript">
 	window.prettyPrint && prettyPrint();
+</script>
+<script type="text/x-jquery-tmpl" id="config-table-tmpl">
+  {{each rows}}
+  <tr {{if $index % 2 == 1 }}class="odd"{{/if}}>
+    <td class="tac">${$index+1}</td>
+    <td>${$value.name}</td>
+    <td>${$value.value}</td>
+  </tr>
+  {{/each}}
+</script>
+<script type="text/javascript">
+  $(document).on('click','.show-demo',function(e){
+    e.preventDefault();
+    getConfigs();
+    $('#demo-content').fadeIn(500);
+    $(document).off('click','.show-demo')
+  });
+  function getConfigs() {
+    $.ajax({
+      type:'POST',
+      // dataType:'json',
+      url:'results/hiveproperties.json',
+      beforeSend:function() {
+        // 开始计时
+        console.time('timer')
+      },
+      success:function (response) {
+        $('.config-table').append($('#config-table-tmpl').tmpl(response));
+        // 结束计时
+        console.timeEnd('timer')
+      }
+    })
+  }
 </script>

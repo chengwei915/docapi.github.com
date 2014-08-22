@@ -1,12 +1,12 @@
 {
-	"navItems": [
-		{"text":"构建友好的目录结构"          , "href":"directory.html"},
-		{"text":"创建一个友好html文档"          , "href":"base-html.html"},
-		{"text":"reset & common css"          , "href":"base-css.html"},
-		{"text":"html/css/javascript解耦"     , "href":"decoupling.html"},
-		{"text":"使用模板引擎jquery.tmpl.js"  , "href":"templete-engine.html"},
-		{"text":"使用暴露式模块模式组织代码"    , "href":"pattens.html"},
-		{"text":"使用浏览器开发试调工具"      , "href":"develorper-tools.html"},
-		{"text":"编写项目开发文档/开发规范"   , "href":"building-api.html"}
-	]
+  "navItems": [
+    { "itemId":"0", "href":"directory.html"        , "text":"构建友好的目录结构"         },
+    { "itemId":"1", "href":"base-html.html"        , "text":"创建一个友好html文档"       },
+    { "itemId":"2", "href":"base-css.html"         , "text":"reset & common css"         },
+    { "itemId":"3", "href":"decoupling.html"       , "text":"html/css/javascript解耦"    },
+    { "itemId":"4", "href":"templete-engine.html"  , "text":"使用模板引擎jquery.tmpl.js" },
+    { "itemId":"5", "href":"pattens.html"          , "text":"使用暴露式模块模式组织代码" },
+    { "itemId":"6", "href":"develorper-tools.html" , "text":"使用浏览器开发试调工具"     },
+    { "itemId":"7", "href":"building-api.html"     , "text":"编写项目开发文档/开发规范"  }
+  ]
 }

@@ -36,7 +36,7 @@
     	, arrow = element.append('<div class="arrow left"></div>').find('.arrow');
 
     	arrow.show().css({
-			'top':cur[0].offsetHeight / 2 + 'px',
+			'top': cur[0].offsetHeight / 2 + 'px',
 			'margin-top': 0 - arrow[0].offsetHeight / 2 + 'px'
 		});
 
@@ -58,16 +58,11 @@
 					if ($('#progress').size()) {
 						$('#progress').stop().animate({
 							width:'60%'
-						},1000)
+						},800)
 					}else {
-						$('<div id="progress"></div>').css({
-							top:0,
-							width:0,
-							height:'4px',
-							position:'absolute',
-							background:'#f00',
-							zIndex:100000
-						}).appendTo('body').stop().animate({
+						$('<div id="progress"></div>')
+						.appendTo('body')
+						.stop().animate({
 							width:'60%'
 						},800)
 					}
@@ -85,6 +80,7 @@
 					})
 					$('.nav-item').removeClass('cur')
 					$navItem.addClass('cur')
+					window.location.hash = $navItem.attr('item-id')
 					// history.pushState && history.pushState({}, document.title, '?page=' + pushParams)
 					$('#progress').stop().animate({
 						width:'100%'

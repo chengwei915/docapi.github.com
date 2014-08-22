@@ -66,6 +66,19 @@ function startRun(){
   alert("start run")
 }
 
+var str = 'space word'
+console.log( str.trim() ) // 输出 'spaceword'
+
+// 修改String的原型
+var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+String.prototype.trim = function() { return this.replace(rtrim, '') }
+
+// 只让不支持该html5 API的浏览器调用（即打补丁）
+if(!String.prototype.trim) {
+  var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+  String.prototype.trim = function() { return this.replace(rtrim, '') }
+}
+
 // 内联Javascript
 &lt;a id="2" href="javascript:;" onclick="remove(this.id);return false"&gt;删除&lt;/a&gt;
 
